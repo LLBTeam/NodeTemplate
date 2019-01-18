@@ -46,5 +46,3 @@ module.exports = {
     JsonWrite(res, rows, '操作成功')
   }
 }
-
-select();
