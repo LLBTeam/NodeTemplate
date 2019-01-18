@@ -1,2 +1,2 @@
 # Node-Template
-node template project
+Node template project

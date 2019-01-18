@@ -1,0 +1,27 @@
+
+syntax = "proto3";
+
+package lieluobo.wechat.mp.marketing;
+
+option java_multiple_files = true;
+option java_package = "com.lieluobo.wechat.mp.marketing";
+option java_outer_classname = "WechatMarketingServiceProto";
+
+message AddUserActionRequest {
+    // 操作页面url
+    string url = 1;
+    // 回传数据的用户标识
+    string clickId = 2;
+}
+
+message AddUserActionResponse {
+    string msg = 1;
+}
+
+service WechatMarketingService {
+
+    // 微信广告数据回传
+    rpc addUserAction(AddUserActionRequest) returns (AddUserActionResponse);
+
+}
+
