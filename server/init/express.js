@@ -4,9 +4,12 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const http = require('http');
 
+
+global.wrapFn = fn => (...args) => fn(...args).catch(args[2]);
+
 require('../util/res');
 const config = require('../conf/server');
-const usersRouter = require('../routes/Users');
+const routers = require('../routes/index');
 
 var app = express();
 app.use(logger('dev'));
@@ -15,7 +18,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/', express.static(path.join(__dirname, '../public/dist')));
-app.use('/api', usersRouter);
+
+app.use('/api', routers);
 
 var port = config.port;
 app.set('port', port);
@@ -28,9 +32,11 @@ app.use(function(req, res, next) {
 });
 
 app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
+  if (err) {
+    console.error(err);
+  }
   res.json({
-    code: err.status,
+    code: err.status || 500,
     msg: err.message
   });
 });

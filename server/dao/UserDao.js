@@ -2,30 +2,26 @@ var sqls = require('../sqlmapping/UserSqlMapping');
 
 module.exports = {
   async queryAll(req, res, next) {
-    let [result] = await Pool.queryWithRes([sqls.queryAll], res);
-    res.success(result);
+    let result = await Pool.query(sqls.queryAll);
+    return result;
   },
-  async queryById(req, res, next) {
-    let result = await Pool.queryByIdWithRes([sqls.queryById, req.params.id], res);
-    res.success(result);
+  async queryById(id) {
+    return await Pool.query(sqls.queryById, id);
   },
-  async update(req, res, next) {
-    let [results] = await conn.queryWithRes([sqls.update, req.body], res);
-    res.success(results);
+  async update(params) {
+    return await Pool.query(sqls.update, params);
   },
-  async delete(req, res, next) {
-    let [results] = await conn.queryWithRes([sqls.delete, req.params.id], res);
-    res.success(results);
+  async delete(id) {
+    return await Pool.query(sqls.delete, id);
   },
-  async create(req, res, next) {
-    let [results] = await conn.queryWithRes(sqls.insert, req.body);
-    res.success(results.insertId);
+  async create(params) {
+    return await Pool.query(sqls.insert, params);
   },
-  async createWithTransaction(req, res, next) {
-    Pool.withTransaction(async (conn) => {
-      let [results] = await conn.query(sqls.insert, req.body);
-      let [results2] = await conn.query(sqls.insert, req.body);
-      res.success(results.insertId);
-    }, res);
+  async createWithTransaction(params) {
+    return await Pool.withTransaction(async (conn) => {
+      let [results] = await conn.query(sqls.insert, params);
+      let [results2] = await conn.query(sqls.insert2, params);
+      return results.insertId;
+    });
   },
 }
