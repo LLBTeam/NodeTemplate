@@ -1,0 +1,28 @@
+syntax = "proto3";
+package common;
+
+option java_multiple_files = false;
+option java_package = "cn.haolie.proto.common";
+option java_outer_classname = "CommonProtos";
+
+message Pagination {
+    int32 page = 1;
+    int32 size = 2;
+    int64 total = 3;
+    int64 totalPages = 4;
+}
+
+message Meta {
+    int32 code = 1 ;
+    string msg = 2 ;
+    Pagination pagination = 3;
+}
+
+message MetaRequest{
+    string body = 1;
+}
+
+message MetaResponse{
+    string body = 1;
+    Meta meta = 2;
+}

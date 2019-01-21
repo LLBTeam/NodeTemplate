@@ -1,0 +1,30 @@
+syntax = "proto3";
+package com.lieluobo.search.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.lieluobo.search.grpc";
+
+import "google/protobuf/timestamp.proto";
+
+message Entity {
+    int64 id = 1; // Id
+    string name = 2; // 名称
+}
+
+message AccountEntity {
+    int64 id = 1; // Id
+    string name = 2; // 名称
+    string englishName = 3; // 名称
+    repeated string channel = 7;
+    repeated string roleCode = 8;
+}
+
+message TimeRangeQuery {
+    google.protobuf.Timestamp startAt = 1; // 时间搜索开始时间
+    google.protobuf.Timestamp endAt = 2; // 时间搜索结束时间
+}
+
+message Int32RangeQuery {
+    int32 min = 1; //最小
+    int32 max = 2; //最大
+}

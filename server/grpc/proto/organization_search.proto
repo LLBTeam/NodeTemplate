@@ -1,0 +1,142 @@
+syntax = "proto3";
+package com.lieluobo.search.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.lieluobo.search.grpc";
+
+import "common/common.proto";
+import "google/protobuf/timestamp.proto";
+import "com/lieluobo/search/grpc/base.proto";
+
+message OrganizationSearchRequest {
+    message Should {
+        int64 managerId = 1;
+        int64 cwId = 2;
+        repeated int64 id = 3;
+        repeated int64 managerIds = 4;
+        repeated int64 cwIds = 5;
+    }
+
+    //签约状态
+    message ShouldSigeStatusAndBdId {
+        repeated int64 bdId = 1; //BD ID
+        repeated int32 signStatus = 2; // 签约状态
+    }
+
+    string keyword = 1; // 搜索关键字
+    int32 type = 2; // 公司类型 1: 客户公司  2: 猎头公司
+    repeated int64 locationCodes = 3; // 地区代码
+    repeated int64 industryCodes = 4; // 行业代码
+    repeated int32 signStatus = 5; // 签约状态
+    google.protobuf.Timestamp startAt = 6; // 公司创建时间搜索开始时间
+    google.protobuf.Timestamp endAt = 7; // 公司创建时间搜索结束时间
+
+    string sort = 8; // 排序
+    int32 page = 9; // 搜索结果页数
+    int32 size = 10; // 分页大小
+    repeated int64 id = 11; // 公司ID
+    string managerName = 12; // 大客户姓名
+    string cwName = 13; // cw姓名
+    string contactName = 14; // 联系人名称
+    Should should = 15; // cw角色or条件筛选
+    string nameIdentification = 16; // 公司字号
+    string bdName = 17; // BD负责人名称
+    string bdAssistorName = 18; // BD协助人员名称
+    repeated int64 bdId = 19;
+
+
+    message OrBdStatement {
+        repeated int64 id = 1;
+        string orgName = 2;
+        repeated int32 status = 3;
+    }
+
+    OrBdStatement orBdStatement = 20; // or条件查询
+    repeated int32 qaStatus = 21; // qa状态
+    repeated int32 redOrgStatus = 22; // 红名单
+    repeated int32 redList = 23; // 红名单:1.在红名单列表，2.不在红名单
+    repeated int64 tagIds = 24; // 红名单:1.在红名单列表，2.不在红名单
+    repeated int32 contactCardAttachment = 25;
+    repeated int32 category = 26;
+    repeated int32 poolStatus = 27;
+    repeated int64 customerLevel = 28; //客户等级
+    repeated int64 ignoreId = 29; // 公司ID
+    TimeRangeQuery earlyProjectPublishAt = 30; // 最近一个一只发布的时间范围
+    repeated int64 managerId = 31;
+    string companyName = 32;
+    repeated int32 workflowStatus = 33; //公司在合同流程中的状态
+    repeated int32 bdProgress = 34; //销售漏斗
+    repeated string locationDetail = 35; //根据详细地址搜索
+    repeated int32 orgFlowTag = 36; //公司扭转标签
+    repeated int32 orgLevel = 37; //公司扭转标签
+    repeated int32 integrity = 38; //公司完整度 1完整 2不完整
+    repeated int32 telToKa = 39; //是否是电销转KA(1:是,2:不是)
+    repeated int32 valueType = 40; // 1、非重点2、销售重点客户、3 cw，销售重点客户
+    repeated int32 freeze = 41; // 1.冻结
+    repeated string focusIndustry = 42; //行业职能专注
+    repeated int32 abnormalType = 43; //风险类型
+    repeated int32 bdUserChangeType = 44; //转移类型
+    repeated int32 orgType = 45;// 公司类型 1: 客户公司  2: 猎头公司 多选
+}
+
+message OrganizationSearchResponse {
+    message ProjectOrganizationAttribute {
+        int32 interview = 1;
+        int32 offer = 2;
+        google.protobuf.Timestamp earlyProjectPublishAt = 3; //发布职位时间
+    }
+    message Organization {
+        string name = 1; // 公司名称
+        int64 id = 2; // 公司Id
+        int32 type = 3; // 公司类型 1: 客户公司  2: 猎头公司
+        repeated int32 industryCode = 4; // 行业代码
+        int64 locationCode = 5; // 地区代码
+        AccountEntity manager = 6; // 大客户经理
+        int32 signStatus = 7; // 签约状态
+        int32 projectProcess = 8; // 进展中职位数
+        int32 orderProcess = 9; // 进展中订单数
+        google.protobuf.Timestamp createdAt = 10; // 公司创建时间
+        AccountEntity bd = 11; // BD负责人
+        int32 bdPriority = 12; // BD优先级
+        string locationDetail = 13; // 公司详细地址
+        double bdScore = 14; // 猎企评分
+        google.protobuf.Timestamp latestContactAt = 15; //最后联系
+        int32 contactCardAttachment = 16; //是否有福建
+        repeated AccountEntity bdAssist = 17; // BD负责人
+        int32 natureCode = 18; // 公司性质
+        string phone = 19; // 公司电话
+        int32 qaStatus = 20; // qa状态
+        string qaFailReason = 21; // qa失败原因
+        repeated AccountEntity cw = 22; // cw
+        int32 redList = 23; // 红名单:1.在红名单列表，2.不在红名单
+        google.protobuf.Timestamp maintainStartAt = 24;
+        int32 category = 25;
+        int32 deprecated = 26;
+        int32 managerAllocated = 27;
+        int32 staffCount = 28;
+        int32 poolStatus = 29;
+        ProjectOrganizationAttribute projectOrgAttribute = 30;
+
+        //        google.protobuf.Timestamp cardAttachmentUpdatedAt = 27;
+    }
+    repeated Organization orgs = 1;
+    common.Meta meta = 2;
+    string aggregations = 3; // 聚合
+}
+
+message OrganizationIndexRequest {
+    int64 id = 1; // 公司Id
+}
+
+
+message OrganizationIndexReponse {
+    int64 id = 1; // 公司Id
+}
+
+service OrganizationSearchService {
+    rpc search (OrganizationSearchRequest) returns (OrganizationSearchResponse) {
+    };
+
+    rpc index (OrganizationIndexRequest) returns (OrganizationIndexReponse) {
+    };
+}

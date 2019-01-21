@@ -1,30 +1,39 @@
+var mysql_conf = require('../conf/conf');
 
-function RpcClient(param) {
-
-  var PROTO_PATH = __dirname + './proto/wechat_mp_marketing_service.proto';
-  const CONFIG = {
-    // RpcClient: '172.16.57.83:16666'  //本地
-    RpcClient: 'wechat.service.prod.higgs.com:10052'  //线上
-  }
-  var grpc = require('grpc');
-  var protoLoader = require('@grpc/proto-loader');
-  var packageDefinition = protoLoader.loadSync(
-      PROTO_PATH,
-      {keepCase: true,
-      longs: String,
-      enums: String,
-      defaults: true,
-      oneofs: true
-      });
-  var user_action_proto = grpc.loadPackageDefinition(packageDefinition).lieluobo.wechat.mp.marketing;
-
-  function main() {
-    var client = new user_action_proto.WechatMarketingService(CONFIG.RpcClient,
-                                        grpc.credentials.createInsecure());
-    
-    client.addUserAction(param, function(err, response) {});                                   
-    
-  }
-  main();
+var ORG_SEARCH_PROTO_PATH = __dirname + '/proto/organization_search.proto';
+const CONFIG = {
+  SearchServiceRpcClient: `${mysql_conf.search_service.host}:${mysql_conf.search_service.port}` // 搜索服务
 }
-module.exports = RpcClient;
+var grpc = require('grpc');
+var protoLoader = require('@grpc/proto-loader');
+
+// 搜索服务
+var searchPackageDefinition = protoLoader.loadSync(
+  ORG_SEARCH_PROTO_PATH,
+  {
+    keepCase: true,
+    longs: String,
+    enums: String,
+    defaults: true,
+    oneofs: true
+  });
+var search_proto = grpc.loadPackageDefinition(searchPackageDefinition).com.lieluobo.search.grpc;
+
+// 公司搜索
+function searchOrg(keyword, callback) {
+
+  var client = new search_proto.OrganizationSearchService(CONFIG.SearchServiceRpcClient, grpc.credentials.createInsecure());
+  client.search({
+    page: 1,
+    size: 10,
+    orgType: [1, 2],
+    keyword: keyword
+  }, function (err, response) {
+    callback(err, response)
+  });
+
+}
+
+module.exports = {
+  searchOrg
+}

@@ -1,5 +1,5 @@
 const mysql = require('mysql2')
-var mysql_conf = require('../conf/db');
+var mysql_conf = require('../conf/conf');
 var activity_util = require('../util/util');
 const pool = mysql.createPool(activity_util.extend({}, mysql_conf.mysql)).promise();
 
