@@ -1,7 +1,7 @@
 
 function RpcClient(param) {
 
-  var PROTO_PATH = __dirname + '/wechat_mp_marketing_service.proto';
+  var PROTO_PATH = __dirname + './proto/wechat_mp_marketing_service.proto';
   const CONFIG = {
     // RpcClient: '172.16.57.83:16666'  //本地
     RpcClient: 'wechat.service.prod.higgs.com:10052'  //线上
