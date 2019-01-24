@@ -1,0 +1,31 @@
+{
+  "name": "LLB-node-template-public",
+  "version": "1.0.0",
+  "description": "template",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "LLB",
+  "license": "ISC",
+  "private": true,
+  "dependencies": {
+    "animate.css": "^3.7.0",
+    "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
+    "hey-global": "0.0.1",
+    "hey-log": "0.0.8",
+    "hey-utils": "^0.4.0",
+    "html2canvas": "^1.0.0-alpha.12",
+    "manba": "^1.2.7",
+    "qs": "^6.6.0",
+    "swiper": "^4.4.6",
+    "vue": "^2.5.22",
+    "vue-router": "^3.0.2"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
