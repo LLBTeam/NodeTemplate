@@ -33,7 +33,7 @@ config 文件
 ### 统一返回结构
 
 成功返回
-``` json
+``` javascript
 {
   code: 1,
   body: data,
@@ -42,7 +42,7 @@ config 文件
 ```
 
 失败返回
-``` json
+``` javascript
 {
   code: 0,
   msg
