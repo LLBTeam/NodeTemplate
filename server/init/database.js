@@ -9,12 +9,21 @@ pool.config.connectionConfig.queryFormat = function (sql, values) {
   if (sql.indexOf(':') == -1) {
     return sqlstring.format(sql, values, this.config.stringifyObjects, this.config.timezone);
   }
-  return sql.replace(/\:(\w+)/g, function (txt, key) {
+  let replacedKey = [];
+  return sql.replace(/\:(\w+)/g, (txt, key) => {
     if (values.hasOwnProperty(key)) {
       return sqlstring.escape(values[key]);
     }
+    replacedKey.push(key);
     return txt;
-  }.bind(this));
+  }).replace('?', () => {
+    let objs = Object.keys(values).filter(item=>replacedKey.indexOf(item) == -1).map(key => {
+      if (values.hasOwnProperty(key)) {
+        return `${key} = ${sqlstring.escape(values[key])}`;
+      }
+    });
+    return objs.join(' , ');
+  });
 };
 
 pool = pool.promise();
