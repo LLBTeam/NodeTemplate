@@ -24,7 +24,8 @@ sysRouter.post('/deleteUser/:id', async (req, res, next) => {
 });
 
 //更新某条数据
-sysRouter.delete('/updateUser', async (req, res, next) => {
+sysRouter.post('/updateUser', async (req, res, next) => {
+  console.log(req.body)
   let [result] = await userDao.update(req.body);
   res.success(result);
 });

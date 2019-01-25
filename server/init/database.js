@@ -1,7 +1,23 @@
 const mysql = require('mysql2')
 var conf = require('../conf');
 var utils = require('../util/util');
-const pool = mysql.createPool(utils.extend({}, conf.mysql)).promise();
+let pool = mysql.createPool(utils.extend({}, conf.mysql));
+var sqlstring = require('sqlstring')
+
+pool.config.connectionConfig.queryFormat = function (sql, values) {
+  if (!values) return sql;
+  if (sql.indexOf(':') == -1) {
+    return sqlstring.format(sql, values, this.config.stringifyObjects, this.config.timezone);
+  }
+  return sql.replace(/\:(\w+)/g, function (txt, key) {
+    if (values.hasOwnProperty(key)) {
+      return sqlstring.escape(values[key]);
+    }
+    return txt;
+  }.bind(this));
+};
+
+pool = pool.promise();
 
 pool.withTransaction = async function (callback) {
   let conn;
