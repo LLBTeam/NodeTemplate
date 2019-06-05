@@ -11,7 +11,7 @@
   "private": true,
   "dependencies": {
     "animate.css": "^3.7.0",
-    "axios": "^0.18.0",
+    "axios": "^0.19.0",
     "babel-polyfill": "^6.26.0",
     "hey-global": "0.0.1",
     "hey-log": "0.0.8",
