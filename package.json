@@ -13,7 +13,7 @@
     "hey-utils": "^0.4.0",
     "morgan": "^1.9.1",
     "mysql2": "^1.6.4",
-    "node-fetch": "^2.3.0",
+    "node-fetch": "^2.6.1",
     "sqlstring": "^2.3.1"
   },
   "devDependencies": {
