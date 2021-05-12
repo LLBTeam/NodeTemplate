@@ -9,7 +9,7 @@
     "@grpc/proto-loader": "^0.3.0",
     "cookie-parser": "~1.4.3",
     "express": "~4.16.0",
-    "grpc": "^1.16.1",
+    "grpc": "^1.24.9",
     "hey-utils": "^0.4.0",
     "morgan": "^1.9.1",
     "mysql2": "^1.6.4",
